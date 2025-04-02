@@ -1,9 +1,15 @@
 import React from "react";
-import "./Navbar.css";
+import "./StepperAi.css";
+import GuideSteps from "../GuideStep/GuideStep";
 import { useState } from "react";
 import { Stepper, Step, StepLabel, Button, Typography } from "@mui/material";
 
-const steps = ["Nhập thông tin", "Thanh toán", "Hoàn tất"];
+const steps = [
+  "📖 Hướng Dẫn Sử Dụng.",
+  "Chọn Nguồn Truyện Để Tải Lên Và Xử Lý",
+  "Cài Đặt AI.",
+  "Tiến Trình Biên Dịch.",
+];
 
 const Navbar = () => {
   const [activeStep, setActiveStep] = useState(0);
@@ -14,7 +20,7 @@ const Navbar = () => {
 
   return (
     <div className="nav-wrapper">
-      <div style={{ width: "50%", margin: "auto", textAlign: "center" }}>
+      <div className="wrapper-stepper">
         <Stepper activeStep={activeStep} alternativeLabel>
           {steps.map((label, index) => (
             <Step key={index}>
@@ -32,9 +38,10 @@ const Navbar = () => {
           ) : (
             <div>
               <Typography variant="body1">
-                {activeStep === 0 && "Nhập thông tin cá nhân của bạn."}
-                {activeStep === 1 && "Chọn phương thức thanh toán."}
-                {activeStep === 2 && "Xác nhận và hoàn tất đơn hàng."}
+                {activeStep === 0 && <GuideSteps />}
+                {activeStep === 1 && "Chọn Nguồn Truyện Để Tải Lên Và Xử Lý."}
+                {activeStep === 2 && "Cài Đặt AI."}
+                {activeStep === 3 && "Tiến Trình Biên Dịch."}
               </Typography>
 
               <div style={{ marginTop: 20 }}>

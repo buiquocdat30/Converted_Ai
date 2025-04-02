@@ -1,0 +1,38 @@
+.guide-container {
+    width: 50%;
+    margin: auto;
+    text-align: left;
+}
+
+.guide-title {
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.guide-card {
+    background: #1e1e2d;
+    color: white;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.1);
+}
+
+.guide-step-title {
+    color: #ffcc00;
+    font-weight: bold;
+}
+
+.guide-link {
+    display: flex;
+    align-items: center;
+    color: #00ffcc;
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.guide-icon {
+    margin-right: 5px;
+}
