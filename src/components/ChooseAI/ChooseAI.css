@@ -1,0 +1,71 @@
+.container {
+    padding: 24px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  }
+  
+  .title {
+    color: #3f51b5;
+    font-weight: 700 !important;
+    margin-bottom: 8px !important;
+  }
+  
+  .subtitle {
+    color: #555;
+    margin-bottom: 20px !important;
+  }
+  
+  .section {
+    margin-bottom: 24px;
+  }
+  
+  .sectionTitle {
+    color: #333;
+    margin-bottom: 12px !important;
+    font-weight: 600 !important;
+  }
+  
+  .select {
+    margin-bottom: 12px !important;
+  }
+  
+  .note {
+    color: #666;
+    font-style: italic;
+  }
+  
+  .divider {
+    margin: 24px 0 !important;
+    background-color: #e0e0e0 !important;
+  }
+  
+  .table {
+    margin-bottom: 20px;
+    border-radius: 8px !important;
+    overflow: hidden;
+  }
+  
+  .table th, .table td {
+    border: 1px solid #e0e0e0;
+  }
+  
+  .input {
+    margin-bottom: 16px !important;
+  }
+  
+  .button {
+    background-color: #4caf50 !important;
+    color: white !important;
+    padding: 10px 20px !important;
+    text-transform: none !important;
+  }
+  
+  .button:hover {
+    background-color: #388e3c !important;
+  }
+  
+  .requirement {
+    color: #444;
+    line-height: 1.6 !important;
+  }

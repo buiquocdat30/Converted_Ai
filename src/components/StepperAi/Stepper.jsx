@@ -1,8 +1,11 @@
 import React from "react";
 import "./StepperAi.css";
 import GuideSteps from "../GuideStep/GuideStep";
+import ChooseAI from "../ChooseAI/ChooseAI";
+import SourceText from "../SourceText/SourceText";
 import { useState } from "react";
 import { Stepper, Step, StepLabel, Button, Typography } from "@mui/material";
+import { styled } from "@mui/material/styles";
 
 const steps = [
   "📖 Hướng Dẫn Sử Dụng.",
@@ -11,21 +14,59 @@ const steps = [
   "Tiến Trình Biên Dịch.",
 ];
 
-const Navbar = () => {
+const StepperAi = () => {
   const [activeStep, setActiveStep] = useState(0);
 
   const handleNext = () => setActiveStep((prev) => prev + 1);
   const handleBack = () => setActiveStep((prev) => prev - 1);
   const handleReset = () => setActiveStep(0);
 
+  // Custom Step Styles
+  const CustomStep = styled(Step)({
+    "& .MuiStepLabel-root": {
+      "& .MuiStepIcon-root": {
+        color: "#e0e0e0", // Màu icon khi chưa active
+        "&.Mui-active": {
+          color: "rgb(104, 146, 119)", // Màu icon khi active
+        },
+        "&.Mui-completed": {
+          color: "rgb(104, 146, 119)", // Màu icon khi hoàn thành
+        },
+      },
+      "& .MuiStepLabel-label": {
+        color: "#666", // Màu text mặc định
+        "&.Mui-active": {
+          color: "black", // Màu text khi active
+          fontWeight: "bold",
+        },
+        "&.Mui-completed": {
+          color: "rgb(104, 146, 119)", // Màu text khi hoàn thành
+        },
+      },
+    },
+  });
+  // Tạo styled component cho button
+  const CustomButton = styled(Button)({
+    backgroundColor: "rgb(104, 146, 119)",
+    color: "white",
+    "&:hover": {
+      backgroundColor: "rgb(84, 126, 99)",
+    },
+    "&.Mui-disabled": {
+      backgroundColor: "white",
+      color: "black",
+      border: "1px solid #ccc",
+    },
+  });
+
   return (
-    <div className="nav-wrapper">
-      <div className="wrapper-stepper">
+    <div className="st-wrapper">
+      <div className="st-wrapper-stepper">
         <Stepper activeStep={activeStep} alternativeLabel>
           {steps.map((label, index) => (
-            <Step key={index}>
+            <CustomStep key={index}>
               <StepLabel>{label}</StepLabel>
-            </Step>
+            </CustomStep>
           ))}
         </Stepper>
 
@@ -33,28 +74,28 @@ const Navbar = () => {
           {activeStep === steps.length ? (
             <div>
               <Typography variant="h6">🎉 Hoàn tất!</Typography>
-              <Button onClick={handleReset}>Bắt đầu lại</Button>
+              <CustomButton onClick={handleReset}>Bắt đầu lại</CustomButton>
             </div>
           ) : (
             <div>
               <Typography variant="body1">
                 {activeStep === 0 && <GuideSteps />}
-                {activeStep === 1 && "Chọn Nguồn Truyện Để Tải Lên Và Xử Lý."}
-                {activeStep === 2 && "Cài Đặt AI."}
+                {activeStep === 1 && <SourceText/>}
+                {activeStep === 2 && <ChooseAI />}
                 {activeStep === 3 && "Tiến Trình Biên Dịch."}
               </Typography>
 
-              <div style={{ marginTop: 20 }}>
-                <Button disabled={activeStep === 0} onClick={handleBack}>
+              <div className="st-list-button">
+                <CustomButton disabled={activeStep === 0} onClick={handleBack}>
                   Quay lại
-                </Button>
-                <Button
+                </CustomButton>
+                <CustomButton
                   variant="contained"
                   onClick={handleNext}
                   style={{ marginLeft: 10 }}
                 >
                   {activeStep === steps.length - 1 ? "Hoàn tất" : "Tiếp tục"}
-                </Button>
+                </CustomButton>
               </div>
             </div>
           )}
@@ -64,4 +105,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default StepperAi;

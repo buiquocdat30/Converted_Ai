@@ -1,22 +1,27 @@
 .guide-container {
-    width: 50%;
+    max-width: 600px;
     margin: auto;
-    text-align: left;
+    padding: 20px;
+    background: rgb(104, 146, 119);
+    color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px #ffffff1a;
 }
 
 .guide-title {
     text-align: center;
+    color: #ffcc00;
+    border-bottom: 1px solid #fff;
     margin-bottom: 20px;
-    font-weight: bold;
-    color: #fff;
 }
 
-.guide-card {
-    background: #1e1e2d;
+.guide-step {
+    background: rgb(84, 126, 99);
     color: white;
     margin-bottom: 15px;
     border-radius: 10px;
     box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.1);
+    padding: 20px 20px;
 }
 
 .guide-step-title {
@@ -25,14 +30,15 @@
 }
 
 .guide-link {
-    display: flex;
-    align-items: center;
+    text-align: left;
     color: #00ffcc;
     text-decoration: none;
     font-weight: bold;
-    margin-top: 10px;
+    cursor: pointer;
 }
 
-.guide-icon {
-    margin-right: 5px;
+.guide-step p, li{
+    text-align: left;
+    padding-left: 15px;
+    line-height: 2;
 }

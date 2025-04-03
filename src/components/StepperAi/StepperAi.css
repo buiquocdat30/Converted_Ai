@@ -1,5 +1,13 @@
-.wrapper-stepper {
+.st-wrapper-stepper {
     width: 50%;
     margin: auto;
     text-align: center;
 }
+
+.st-list-button {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+
+}
+
