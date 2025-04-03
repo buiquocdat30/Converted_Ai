@@ -3,6 +3,7 @@ import "./StepperAi.css";
 import GuideSteps from "../GuideStep/GuideStep";
 import ChooseAI from "../ChooseAI/ChooseAI";
 import SourceText from "../SourceText/SourceText";
+import Converte from "../Converte/Converte"
 import { useState } from "react";
 import { Stepper, Step, StepLabel, Button, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
@@ -82,7 +83,7 @@ const StepperAi = () => {
                 {activeStep === 0 && <GuideSteps />}
                 {activeStep === 1 && <SourceText/>}
                 {activeStep === 2 && <ChooseAI />}
-                {activeStep === 3 && "Tiến Trình Biên Dịch."}
+                {activeStep === 3 && <Converte/>}
               </Typography>
 
               <div className="st-list-button">

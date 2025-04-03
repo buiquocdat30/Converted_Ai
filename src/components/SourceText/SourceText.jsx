@@ -1,106 +1,103 @@
 import React, { useState } from "react";
-import {
-  Tabs,
-  Tab,
-  Box,
-  Typography,
-  TextField,
-  Button,
-  InputAdornment,
-} from "@mui/material";
-import { Search, CloudUpload } from "@mui/icons-material";
-import styles from "./SourceText.css";
+import { Tab } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { Search, CloudUpload } from "@mui/icons-material";
+import "./SourceText.css"; // Giả sử CSS file đã tồn tại
 
 const SourceText = () => {
-  const [value, setValue] = useState(0);
+  const [activeTab, setActiveTab] = useState(0);
   const [searchText, setSearchText] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
 
-  const handleChangeTab = (event, newValue) => {
-    setValue(newValue);
+  const handleChangeTab = (index) => {
+    setActiveTab(index);
   };
 
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
   };
 
-  const CustomButton = styled(Button)({
+  // Giữ lại CustomButton từ Material UI như yêu cầu
+  const CustomButton = styled('button')({
     backgroundColor: "rgb(104, 146, 119)",
     color: "white",
+    padding: "10px 15px",
+    border: "none",
+    borderRadius: "4px",
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+    cursor: "pointer",
+    fontSize: "14px",
+    fontWeight: "500",
     "&:hover": {
       backgroundColor: "rgb(84, 126, 99)",
     },
-    "&.Mui-disabled": {
+    "&:disabled": {
       backgroundColor: "#f0f0f0",
       color: "#999",
       border: "1px solid #ddd",
+      cursor: "not-allowed"
     },
   });
 
   return (
-    <Box className={styles.container}>
-      <div className={styles.tabsTitleContainer}>
-        <Tabs
-          value={value}
-          onChange={handleChangeTab}
-          variant="fullWidth"
-          classes={{
-            root: styles.tabsRoot,
-            indicator: styles.tabsIndicator,
-          }}
-        >
+    <div className="container">
+      <div className="tabs-title-container">
+        <div className="tabs-container">
           <Tab
             label="TXT"
-            classes={{ root: styles.tabRoot, selected: styles.tabSelected }}
+            className={activeTab === 0 ? "tab selected" : "tab"}
+            onClick={() => handleChangeTab(0)}
           />
           <Tab
             label="EPUB"
-            classes={{ root: styles.tabRoot, selected: styles.tabSelected }}
+            className={activeTab === 1 ? "tab selected" : "tab"}
+            onClick={() => handleChangeTab(1)}
           />
           <Tab
             label="Online"
-            classes={{ root: styles.tabRoot, selected: styles.tabSelected }}
+            className={activeTab === 2 ? "tab selected" : "tab"}
+            onClick={() => handleChangeTab(2)}
           />
-        </Tabs>
+        </div>
+        <div className="tab-indicator" style={{ left: `${activeTab * 33.33}%` }}></div>
       </div>
 
-      <Box className={styles.tabContent}>
+      <div className="tab-content">
         {/* Tab TXT */}
-        {value === 0 && (
-          <div className={styles.txtContent}>
-            <div className={styles.tabContentBody}>
-              <div className={styles.sectionTitle}>
+        {activeTab === 0 && (
+          <div className="txt-content">
+            <div className="tab-content-body">
+              <div className="section-title">
                 Tải lên TXT
               </div>
 
-              <CustomButton
-                variant="contained"
-                component="label"
-                startIcon={<CloudUpload />}
-                className={styles.uploadButton}
-              >
-                Chọn file TXT
-                <input
-                  type="file"
-                  hidden
-                  accept=".txt"
-                  onChange={handleFileChange}
-                />
-              </CustomButton>
+              <label className="file-input-label">
+                <CustomButton component="span">
+                  <CloudUpload />
+                  Chọn file TXT
+                  <input
+                    type="file"
+                    hidden
+                    accept=".txt"
+                    onChange={handleFileChange}
+                  />
+                </CustomButton>
+              </label>
 
               {selectedFile && (
-                <div className={styles.fileName}>
+                <div className="file-name">
                   Đã chọn: {selectedFile.name}
                 </div>
               )}
             </div>
 
-            <div className={styles.tabContentBody}>
-              <h3 className={styles.sectionTitle}>
+            <div className="tab-content-body">
+              <h3 className="section-title">
                 📌 Các định dạng chương được hỗ trợ:
               </h3>
-              <ul className={styles.formatList}>
+              <ul className="format-list">
                 <li>
                   <p>Chương N - Ví dụ: "Chương 1: Khối đầu"</p>
                 </li>
@@ -125,37 +122,35 @@ const SourceText = () => {
         )}
 
         {/* Tab EPUB */}
-        {value === 1 && (
-          <div className={styles.epubContent}>
-            <div className={styles.tabContentBody}>
-              <h3 className={styles.sectionTitle}>
+        {activeTab === 1 && (
+          <div className="epub-content">
+            <div className="tab-content-body">
+              <h3 className="section-title">
                 Tải lên EPUB
               </h3>
 
-              <CustomButton
-                variant="contained"
-                component="label"
-                startIcon={<CloudUpload />}
-                className={styles.uploadButton}
-              >
-                Chọn file EPUB
-                <input
-                  type="file"
-                  hidden
-                  accept=".epub"
-                  onChange={handleFileChange}
-                />
-              </CustomButton>
+              <label className="file-input-label">
+                <CustomButton component="span">
+                  <CloudUpload />
+                  Chọn file EPUB
+                  <input
+                    type="file"
+                    hidden
+                    accept=".epub"
+                    onChange={handleFileChange}
+                  />
+                </CustomButton>
+              </label>
 
               {selectedFile && (
-                <Typography className={styles.fileName}>
+                <div className="file-name">
                   Đã chọn: {selectedFile.name}
-                </Typography>
+                </div>
               )}
             </div>
 
-            <div className={styles.tabContentBody}>
-              <ul className={styles.formatList}>
+            <div className="tab-content-body">
+              <ul className="format-list">
                 <li>
                   <p>
                     <strong>
@@ -184,42 +179,38 @@ const SourceText = () => {
         )}
 
         {/* Tab Online */}
-        {value === 2 && (
-          <div className={styles.onlineContent}>
-            <div className={styles.tabContentBody}>
-              <Typography variant="h6" className={styles.sectionTitle}>
+        {activeTab === 2 && (
+          <div className="online-content">
+            <div className="tab-content-body">
+              <h3 className="section-title">
                 Nhập Tên Truyện Cần Tìm
-              </Typography>
+              </h3>
 
-              <TextField
-                fullWidth
-                variant="outlined"
-                placeholder="Nhập tên truyện..."
-                value={searchText}
-                onChange={(e) => setSearchText(e.target.value)}
-                className={styles.searchInput}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Search />
-                    </InputAdornment>
-                  ),
-                }}
-              />
+              <div className="search-container">
+                <div className="search-input-container">
+                  <Search className="search-icon" />
+                  <input
+                    type="text"
+                    placeholder="Nhập tên truyện..."
+                    value={searchText}
+                    onChange={(e) => setSearchText(e.target.value)}
+                    className="search-input"
+                  />
+                </div>
 
-              <CustomButton
-                variant="contained"
-                className={styles.searchButton}
-                disabled={!searchText}
-              >
-                Tìm kiếm
-              </CustomButton>
+                <CustomButton
+                  disabled={!searchText}
+                  onClick={() => console.log("Searching:", searchText)}
+                >
+                  Tìm kiếm
+                </CustomButton>
+              </div>
             </div>
           </div>
         )}
-      </Box>
+      </div>
 
-      <div className={styles.tabsInfo}>
+      <div className="tabs-info">
         <div>
           <p>
             Truyện: <strong className="name">Không tên</strong>
@@ -231,7 +222,7 @@ const SourceText = () => {
           </p>
         </div>
       </div>
-    </Box>
+    </div>
   );
 };
 
