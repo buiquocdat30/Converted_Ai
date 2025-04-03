@@ -9,7 +9,7 @@ import { styled } from "@mui/material/styles";
 
 const steps = [
   "📖 Hướng Dẫn Sử Dụng.",
-  "Chọn Nguồn Truyện Để Tải Lên Và Xử Lý",
+  "Chọn Nguồn Truyện Và Xử Lý",
   "Cài Đặt AI.",
   "Tiến Trình Biên Dịch.",
 ];
