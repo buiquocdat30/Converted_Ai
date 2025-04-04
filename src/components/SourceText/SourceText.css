@@ -59,6 +59,15 @@
   color: #333;
 }
 
+.file-input-container {
+  display: flex;
+  justify-content: center
+}
+
+.file-input-container button {
+  
+}
+
 .file-input-label {
   display: inline-block;
   cursor: pointer;
@@ -138,7 +147,7 @@
     flex-direction: column;
     gap: 10px;
   }
-  
+
   .search-container {
     width: 100%;
   }

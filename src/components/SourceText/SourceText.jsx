@@ -1,13 +1,22 @@
-import React, { useState } from "react";
+import React, {useContext, useState, useRef } from "react";
 import { Tab } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { FileContext } from "../Contexts/FileContext"; // Import Context
 import { Search, CloudUpload } from "@mui/icons-material";
+
 import "./SourceText.css"; // Giả sử CSS file đã tồn tại
+
 
 const SourceText = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [searchText, setSearchText] = useState("");
-  const [selectedFile, setSelectedFile] = useState(null);
+  const {selectedFile, setSelectedFile} = useContext(FileContext);
+
+
+  
+  // Add refs for file inputs
+  const txtFileInputRef = useRef(null);
+  const epubFileInputRef = useRef(null);
 
   const handleChangeTab = (index) => {
     setActiveTab(index);
@@ -17,8 +26,21 @@ const SourceText = () => {
     setSelectedFile(event.target.files[0]);
   };
 
+  // Add functions to trigger file inputs
+  const triggerTxtFileInput = () => {
+    if (txtFileInputRef.current) {
+      txtFileInputRef.current.click();
+    }
+  };
+
+  const triggerEpubFileInput = () => {
+    if (epubFileInputRef.current) {
+      epubFileInputRef.current.click();
+    }
+  };
+
   // Giữ lại CustomButton từ Material UI như yêu cầu
-  const CustomButton = styled('button')({
+  const CustomButton = styled("button")({
     backgroundColor: "rgb(104, 146, 119)",
     color: "white",
     padding: "10px 15px",
@@ -37,7 +59,7 @@ const SourceText = () => {
       backgroundColor: "#f0f0f0",
       color: "#999",
       border: "1px solid #ddd",
-      cursor: "not-allowed"
+      cursor: "not-allowed",
     },
   });
 
@@ -61,7 +83,10 @@ const SourceText = () => {
             onClick={() => handleChangeTab(2)}
           />
         </div>
-        <div className="tab-indicator" style={{ left: `${activeTab * 33.33}%` }}></div>
+        <div
+          className="tab-indicator"
+          style={{ left: `${activeTab * 33.33}%` }}
+        ></div>
       </div>
 
       <div className="tab-content">
@@ -69,27 +94,24 @@ const SourceText = () => {
         {activeTab === 0 && (
           <div className="txt-content">
             <div className="tab-content-body">
-              <div className="section-title">
-                Tải lên TXT
-              </div>
+              <div className="section-title">Tải lên TXT</div>
 
-              <label className="file-input-label">
-                <CustomButton component="span">
+              <div className="file-input-container">
+                <CustomButton type="button" onClick={triggerTxtFileInput}>
                   <CloudUpload />
                   Chọn file TXT
-                  <input
-                    type="file"
-                    hidden
-                    accept=".txt"
-                    onChange={handleFileChange}
-                  />
                 </CustomButton>
-              </label>
+                <input
+                  type="file"
+                  ref={txtFileInputRef}
+                  style={{ display: "none" }}
+                  accept=".txt"
+                  onChange={handleFileChange}
+                />
+              </div>
 
               {selectedFile && (
-                <div className="file-name">
-                  Đã chọn: {selectedFile.name}
-                </div>
+                <div className="file-name">Đã chọn: {selectedFile.name}</div>
               )}
             </div>
 
@@ -102,19 +124,13 @@ const SourceText = () => {
                   <p>Chương N - Ví dụ: "Chương 1: Khối đầu"</p>
                 </li>
                 <li>
-                  <p>
-                    chương N - Ví dụ: "Chương 1: Hành trình mới"
-                  </p>
+                  <p>chương N - Ví dụ: "Chương 1: Hành trình mới"</p>
                 </li>
                 <li>
-                  <p>
-                    Chapter N - Ví dụ: "Chapter 2 - The Journey"
-                  </p>
+                  <p>Chapter N - Ví dụ: "Chapter 2 - The Journey"</p>
                 </li>
                 <li>
-                  <p>
-                    chapter N - Ví dụ: "chapters & A New Beginning"
-                  </p>
+                  <p>chapter N - Ví dụ: "chapters & A New Beginning"</p>
                 </li>
               </ul>
             </div>
@@ -125,27 +141,24 @@ const SourceText = () => {
         {activeTab === 1 && (
           <div className="epub-content">
             <div className="tab-content-body">
-              <h3 className="section-title">
-                Tải lên EPUB
-              </h3>
+              <h3 className="section-title">Tải lên EPUB</h3>
 
-              <label className="file-input-label">
-                <CustomButton component="span">
+              <div className="file-input-container">
+                <CustomButton type="button" onClick={triggerEpubFileInput}>
                   <CloudUpload />
                   Chọn file EPUB
-                  <input
-                    type="file"
-                    hidden
-                    accept=".epub"
-                    onChange={handleFileChange}
-                  />
                 </CustomButton>
-              </label>
+                <input
+                  type="file"
+                  ref={epubFileInputRef}
+                  style={{ display: "none" }}
+                  accept=".epub"
+                  onChange={handleFileChange}
+                />
+              </div>
 
               {selectedFile && (
-                <div className="file-name">
-                  Đã chọn: {selectedFile.name}
-                </div>
+                <div className="file-name">Đã chọn: {selectedFile.name}</div>
               )}
             </div>
 
@@ -182,9 +195,7 @@ const SourceText = () => {
         {activeTab === 2 && (
           <div className="online-content">
             <div className="tab-content-body">
-              <h3 className="section-title">
-                Nhập Tên Truyện Cần Tìm
-              </h3>
+              <h3 className="section-title">Nhập Tên Truyện Cần Tìm</h3>
 
               <div className="search-container">
                 <div className="search-input-container">
@@ -210,7 +221,7 @@ const SourceText = () => {
         )}
       </div>
 
-      <div className="tabs-info">
+      {/* <div className="tabs-info">
         <div>
           <p>
             Truyện: <strong className="name">Không tên</strong>
@@ -221,7 +232,7 @@ const SourceText = () => {
             Tác giả: <strong className="author">Không biết</strong>
           </p>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

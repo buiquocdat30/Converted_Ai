@@ -1,9 +1,11 @@
 import React from "react";
 import "./StepperAi.css";
+import { FileProvider } from "../Contexts/FileContext";
+import { AIProvider } from "../Contexts/AiContext";
 import GuideSteps from "../GuideStep/GuideStep";
 import ChooseAI from "../ChooseAI/ChooseAI";
 import SourceText from "../SourceText/SourceText";
-import Converte from "../Converte/Converte"
+import Converte from "../Converte/Converte";
 import { useState } from "react";
 import { Stepper, Step, StepLabel, Button, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
@@ -79,13 +81,16 @@ const StepperAi = () => {
             </div>
           ) : (
             <div>
-              <Typography variant="body1">
-                {activeStep === 0 && <GuideSteps />}
-                {activeStep === 1 && <SourceText/>}
-                {activeStep === 2 && <ChooseAI />}
-                {activeStep === 3 && <Converte/>}
-              </Typography>
-
+              <FileProvider>
+                <AIProvider>
+                  <Typography variant="body1">
+                    {activeStep === 0 && <GuideSteps />}
+                    {activeStep === 1 && <SourceText />}
+                    {activeStep === 2 && <ChooseAI />}
+                    {activeStep === 3 && <Converte />}
+                  </Typography>
+                </AIProvider>
+              </FileProvider>
               <div className="st-list-button">
                 <CustomButton disabled={activeStep === 0} onClick={handleBack}>
                   Quay lại
