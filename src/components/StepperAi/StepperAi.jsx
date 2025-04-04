@@ -1,12 +1,10 @@
 import React from "react";
 import "./StepperAi.css";
-import { FileProvider } from "../Contexts/FileContext";
-import { AIProvider } from "../Contexts/AiContext";
 import GuideSteps from "../GuideStep/GuideStep";
 import ChooseAI from "../ChooseAI/ChooseAI";
 import SourceText from "../SourceText/SourceText";
 import Converte from "../Converte/Converte";
-import { useState, useContext,useEffect } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Stepper, Step, StepLabel, Button, Typography } from "@mui/material";
 import { FileContext } from "../Contexts/FileContext";
 import { useAI } from "../Contexts/AiContext";
@@ -25,11 +23,10 @@ const StepperAi = () => {
   const { aiConfig } = useAI();
 
   useEffect(() => {
-    console.log('SelectedFile:', selectedFile); // Kiểm tra giá trị
+    console.log("SelectedFile:", selectedFile); // Kiểm tra giá trị
   }, [selectedFile]);
   // Thêm vào phần đầu component (sau các import)
   const validateStep = (step) => {
-    
     switch (step) {
       case 1: // Bước chọn nguồn
         return !!selectedFile; // Yêu cầu chọn file
@@ -45,13 +42,16 @@ const StepperAi = () => {
       alert("Vui lòng chọn file EPUB/TXT trước khi tiếp tục!");
       return;
     }
+    if (activeStep === 2 && !aiConfig.apiKey) {
+      alert("Vui lòng nhập API Key trước khi tiếp tục!");
+      return;
+    }
     setActiveStep((prev) => prev + 1);
   };
 
   const handleBack = () => setActiveStep((prev) => prev - 1);
   const handleReset = () => setActiveStep(0);
 
-  
   // Custom Step Styles
   const CustomStep = styled(Step)({
     "& .MuiStepLabel-root": {
@@ -109,16 +109,13 @@ const StepperAi = () => {
             </div>
           ) : (
             <div>
-              <FileProvider>
-                <AIProvider>
-                  <Typography variant="body1">
-                    {activeStep === 0 && <GuideSteps />}
-                    {activeStep === 1 && <SourceText />}
-                    {activeStep === 2 && <ChooseAI />}
-                    {activeStep === 3 && <Converte />}
-                  </Typography>
-                </AIProvider>
-              </FileProvider>
+              <Typography variant="body1">
+                {activeStep === 0 && <GuideSteps />}
+                {activeStep === 1 && <SourceText />}
+                {activeStep === 2 && <ChooseAI />}
+                {activeStep === 3 && <Converte />}
+              </Typography>
+
               <div className="st-list-button">
                 <CustomButton disabled={activeStep === 0} onClick={handleBack}>
                   Quay lại

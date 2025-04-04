@@ -1,4 +1,4 @@
-import React, {useContext, useState, useRef } from "react";
+import React, { useContext, useState, useRef } from "react";
 import { Tab } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { FileContext } from "../Contexts/FileContext"; // Import Context
@@ -6,14 +6,11 @@ import { Search, CloudUpload } from "@mui/icons-material";
 
 import "./SourceText.css"; // Giả sử CSS file đã tồn tại
 
-
 const SourceText = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [searchText, setSearchText] = useState("");
-  const {selectedFile, setSelectedFile} = useContext(FileContext);
+  const { selectedFile, setSelectedFile } = useContext(FileContext);
 
-
-  
   // Add refs for file inputs
   const txtFileInputRef = useRef(null);
   const epubFileInputRef = useRef(null);
@@ -112,8 +109,15 @@ const SourceText = () => {
                 />
               </div>
 
+              {/* hiển thị tên file */}
               {selectedFile && (
                 <div className="file-name">Đã chọn: {selectedFile.name}</div>
+              )}
+              {/* Hiến thị thành công khi tải file */}
+              {selectedFile && (
+                <div style={{ color: "green", marginTop: "8px" }}>
+                  ✓ File đã sẵn sàng để chuyển sang bước tiếp theo
+                </div>
               )}
             </div>
 
