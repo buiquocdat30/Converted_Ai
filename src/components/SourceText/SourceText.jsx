@@ -23,7 +23,9 @@ const SourceText = () => {
   };
 
   const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
+    if (event.target.files && event.target.files[0]) {
+      setSelectedFile(event.target.files[0]); // Phải có kiểm tra này
+    }
   };
 
   // Add functions to trigger file inputs

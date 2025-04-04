@@ -6,8 +6,10 @@ import GuideSteps from "../GuideStep/GuideStep";
 import ChooseAI from "../ChooseAI/ChooseAI";
 import SourceText from "../SourceText/SourceText";
 import Converte from "../Converte/Converte";
-import { useState } from "react";
+import { useState, useContext,useEffect } from "react";
 import { Stepper, Step, StepLabel, Button, Typography } from "@mui/material";
+import { FileContext } from "../Contexts/FileContext";
+import { useAI } from "../Contexts/AiContext";
 import { styled } from "@mui/material/styles";
 
 const steps = [
@@ -19,11 +21,37 @@ const steps = [
 
 const StepperAi = () => {
   const [activeStep, setActiveStep] = useState(0);
+  const { selectedFile } = useContext(FileContext);
+  const { aiConfig } = useAI();
 
-  const handleNext = () => setActiveStep((prev) => prev + 1);
+  useEffect(() => {
+    console.log('SelectedFile:', selectedFile); // Kiểm tra giá trị
+  }, [selectedFile]);
+  // Thêm vào phần đầu component (sau các import)
+  const validateStep = (step) => {
+    
+    switch (step) {
+      case 1: // Bước chọn nguồn
+        return !!selectedFile; // Yêu cầu chọn file
+      case 2: // Bước cài đặt AI
+        return aiConfig.apiKey.trim() !== ""; // Yêu cầu nhập API Key
+      default:
+        return true;
+    }
+  };
+
+  const handleNext = () => {
+    if (activeStep === 1 && !selectedFile) {
+      alert("Vui lòng chọn file EPUB/TXT trước khi tiếp tục!");
+      return;
+    }
+    setActiveStep((prev) => prev + 1);
+  };
+
   const handleBack = () => setActiveStep((prev) => prev - 1);
   const handleReset = () => setActiveStep(0);
 
+  
   // Custom Step Styles
   const CustomStep = styled(Step)({
     "& .MuiStepLabel-root": {

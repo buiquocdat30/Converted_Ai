@@ -13,6 +13,8 @@ import {
   Box,
   CircularProgress,
 } from "@mui/material";
+import Epub  from "epub-gen";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { FileContext } from "../Contexts/FileContext";
 import { useAI } from "../Contexts/AiContext";
 import "./Converte.css";
@@ -23,6 +25,7 @@ const Convert = () => {
   const [endChapter, setEndChapter] = useState(1);
   const [translatedContent, setTranslatedContent] = useState("");
   const [isTranslating, setIsTranslating] = useState(false);
+  const [error, setError] = useState(null);
   const { selectedFile } = useContext(FileContext);
   const { aiConfig } = useAI();
 
@@ -59,30 +62,61 @@ const Convert = () => {
       console.error("Error loading EPUB:", error);
     }
   };
+  // Thêm hàm phân tích chương (đặt trước handleTranslate)
+  const parseChapters = (content) => {
+    const chapterRegex =
+      /(Chương|Chapter|chương|chapter)\s*(\d+)(.*?)(?=\n\s*(Chương|Chapter|chương|chapter)\s*\d+|$)/gis;
+    const chapters = [];
+    let match;
 
+    while ((match = chapterRegex.exec(content)) !== null) {
+      chapters.push({
+        number: parseInt(match[2]),
+        title: match[3].trim(),
+        content: match[0].trim(),
+      });
+    }
+    return chapters.length > 0 ? chapters : [{ number: 1, title: "", content }];
+  };
+
+  //nhập
   const handleTranslate = async () => {
-    if (!selectedFile) {
-      alert("Vui lòng chọn file trước khi dịch");
-      return;
-    }
-
-    if (!aiConfig.apiKey) {
-      alert("Vui lòng nhập API Key trong phần cài đặt AI");
-      return;
-    }
-
-    setIsTranslating(true);
-    setProgress(0);
-
+    setError(null);
     try {
-      let content = await readFileContent(selectedFile);
-      const translatedText = await translateContent(content);
-      setTranslatedContent(translatedText);
-    } catch (error) {
-      console.error("Lỗi khi dịch:", error);
-      alert("Có lỗi xảy ra khi dịch: " + error.message);
-    } finally {
-      setIsTranslating(false);
+      if (!selectedFile) {
+        alert("Vui lòng chọn file trước khi dịch");
+        return;
+      }
+
+      if (!aiConfig.apiKey) {
+        alert("Vui lòng nhập API Key trong phần cài đặt AI");
+        return;
+      }
+
+      const content = await readFileContent(selectedFile);
+      const chapters = parseChapters(content);
+      const filteredChapters = chapters.filter(
+        (chap) => chap.number >= startChapter && chap.number <= endChapter
+      );
+
+      let fullTranslation = "";
+      for (const chapter of filteredChapters) {
+        const translatedText = await translateContent(chapter.content);
+        fullTranslation += `Chương ${chapter.number}${
+          chapter.title ? ": " + chapter.title : ""
+        }\n\n${translatedText}\n\n`;
+        setProgress(
+          Math.floor(
+            ((filteredChapters.indexOf(chapter) + 1) /
+              filteredChapters.length) *
+              100
+          )
+        );
+      }
+
+      setTranslatedContent(fullTranslation);
+    } catch (err) {
+      setError(err.message);
     }
   };
 
@@ -97,80 +131,30 @@ const Convert = () => {
 
   const translateContent = async (content) => {
     if (!aiConfig.apiKey) {
-      alert("Vui lòng nhập API Key trong phần cài đặt AI");
-      return "";
+      throw new Error("API Key không hợp lệ");
     }
 
-    setIsTranslating(true);
-    setProgress(0);
-
     try {
-      // 1. Tải động thư viện (giảm dung lượng build)
-      const { GoogleGenerativeAI } = await import("@google/generative-ai");
-
-      // 2. Khởi tạo client
+      
       const genAI = new GoogleGenerativeAI(aiConfig.apiKey);
-      const model = genAI.getGenerativeModel({
-        model:
-          aiConfig.model === "gemini-1.5-flash"
-            ? "gemini-1.5-flash-latest"
-            : "gemini-pro",
-      });
 
-      // 3. Tạo prompt thông minh
-      const styleMap = {
-        literary:
-          "Hãy dịch sang tiếng Việt với phong cách văn học, trau chuốt, giữ nguyên vẻ đẹp ngôn từ.",
-        natural:
-          "Dịch tự nhiên như người Việt nói hàng ngày, có thể linh hoạt thay đổi câu từ cho phù hợp.",
-        formal:
-          "Dịch chính xác, giữ nguyên thuật ngữ, phù hợp văn bản học thuật.",
-      };
-
-      const prompt = `
-      [YÊU CẦU]
-      ${styleMap[aiConfig.translationStyle]}
-      ${
-        aiConfig.preserveFormatting
-          ? "→ GIỮ NGUYÊN định dạng (in đậm, in nghiêng, gạch chân)"
-          : ""
+      // Kiểm tra kết nối API
+      try {
+        await genAI
+          .getGenerativeModel({ model: "gemini-pro" })
+          .generateContent("test");
+      } catch (apiError) {
+        throw new Error(
+          `API Key lỗi: ${
+            apiError.message.includes("API_KEY")
+              ? "Key không hợp lệ hoặc hết hạn"
+              : apiError.message
+          }`
+        );
       }
-      ${
-        aiConfig.translateNames
-          ? "→ DỊCH tên riêng sang tiếng Việt"
-          : "→ GIỮ NGUYÊN tên riêng"
-      }
-  
-      [VĂN BẢN GỐC]
-      ${content}
-      `;
-
-      // 4. Chia nhỏ văn bản để tránh giới hạn token
-      const chunks = splitTextIntoChunks(prompt, 15000); // Mỗi chunk ~15k ký tự
-      let fullTranslation = "";
-
-      for (let i = 0; i < chunks.length; i++) {
-        const chunk = chunks[i];
-
-        // 5. Gọi API Gemini
-        const result = await model.generateContent({
-          contents: [{ parts: [{ text: chunk }] }],
-        });
-
-        const response = await result.response;
-        const translatedText = response.text();
-
-        fullTranslation += translatedText + "\n\n";
-        setProgress(Math.floor(((i + 1) / chunks.length) * 100));
-      }
-
-      return fullTranslation;
     } catch (error) {
       console.error("Lỗi dịch:", error);
-      alert(`Lỗi: ${error.message || "Kiểm tra lại API Key"}`);
-      return "";
-    } finally {
-      setIsTranslating(false);
+      throw new Error(`Dịch thất bại: ${error.message}`);
     }
   };
 
@@ -188,10 +172,32 @@ const Convert = () => {
     handleTranslate();
   };
 
-  const handleExport = (type) => {
-    alert(`Đã xuất file ${type} thành công!`);
-  };
+  const handleExport = async (type) => {
+    if (!translatedContent) return;
 
+    if (type === "Text") {
+      const blob = new Blob([translatedContent], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `translated_${
+        selectedFile?.name?.replace(/\.[^/.]+$/, "") || "output"
+      }.txt`;
+      a.click();
+    } else if (type === "EPUB") {
+      try {
+        const options = {
+          title: bookMetadata?.title || "Translated Book",
+          author: bookMetadata?.creator || "Unknown",
+          content: [{ title: "Nội dung", data: translatedContent }],
+        };
+        await new Epub(options).promise;
+        alert("Xuất EPUB thành công!");
+      } catch (error) {
+        alert(`Lỗi xuất EPUB: ${error.message}`);
+      }
+    }
+  };
   return (
     <div className="convert-container">
       <h1 className="convert-title">Bắt Đầu</h1>
@@ -215,7 +221,7 @@ const Convert = () => {
       <div className="expand-section">
         {selectedFile ? (
           <h2 className="expand-title">
-            Thu Gọn/ Mở Rộng <strong>{selectedFile.name}</strong>
+            <strong>{selectedFile.name}</strong>
           </h2>
         ) : (
           <p>Chưa có file nào được chọn từ component SourceText</p>
@@ -322,7 +328,15 @@ const Convert = () => {
           />
         </div>
       </div>
-
+      {/**Bắt lỗi */}
+      {error && (
+        <div
+          className="error-message"
+          style={{ color: "red", margin: "10px 0" }}
+        >
+          ⚠️ {error}
+        </div>
+      )}
       {/* Các nút thao tác */}
       <div className="button-group">
         <Button
