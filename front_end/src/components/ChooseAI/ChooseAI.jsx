@@ -69,37 +69,7 @@ const ChooseAI = () => {
         },
       ],
     },
-    // {
-    //   id: 'openrouter-free',
-    //   name: 'OpenRouter (Miễn phí)',
-    //   description: 'OpenRouter là dịch vụ giúp bạn truy cập AI từ nhiều nhà cung cấp như GPT, DeepSeek, Qwen... Bạn có thể tự tạo API key trên trang chủ OpenRouter bằng cách đăng nhập bằng Google. OpenRouter cho phép dùng 200 yêu cầu mỗi ngày nhé.',
-    //   models: [
-    //     { id: 'deepseek-v3', name: 'DeepSeek: DeepSeek V3 0324 (free)', limit: 'Chưa có thông tin tính toán nhé' },
-    //     { id: 'deepseek-r1', name: 'DeepSeek: R1 (free)', limit: 'Chưa có thông tin tính toán nhé' },
-    //     { id: 'deepseek-r1-32b', name: 'DeepSeek: R1 Distil Qwen 32B (free)', limit: 'Chưa có thông tin tính toán nhé' },
-    //     { id: 'deepseek-r1-14b', name: 'DeepSeek: R1 Distil Qwen 14B (free)', limit: 'Chưa có thông tin tính toán nhé' },
-    //   ]
-    // },
-    // {
-    //   id: 'openrouter-paid',
-    //   name: 'OpenRouter (Có phí)',
-    //   description: 'OpenRouter là dịch vụ giúp bạn truy cập AI từ nhiều nhà cung cấp như GPT, DeepSeek, Qwen... Bạn có thể tự mua API key trên trang chủ OpenRouter bằng cách đăng nhập bằng Google và thanh toán bằng thẻ tín dụng. Nếu mọi người ngại thanh toán quốc tế, Admin có thể hỗ trợ mua giúp (phí 20k nhé), mình chỉ mua lại của OpenRouter chứ không cung cấp dịch vụ AI. Bạn hoàn toàn có thể tự mua và thêm API key vào hệ thống. OpenRouter tính phí kiểu credits, nghĩa là bạn mua từng gói 5 USD, dùng hết thì nạp tiếp nhé. Dưới đây là mức giá ước tính cho 1 triệu chữ, chỉ mang tính tham khảo và có thể không chính xác.',
-    //   models: [
-    //     { id: 'gemini-1.5-flash-8b-paid', name: 'Gemini 1.5 Flash-8B', limit: 'Giới hạn: 4000 lần/phút. Giá khoảng: 7,188 VND / 1 triệu từ (ước lượng, có thể có sai số).' },
-    //     { id: 'gemini-1.5-flash-paid', name: 'Gemini 1.5 Flash', limit: 'Giới hạn: 2000 lần/phút. Giá khoảng: 14,377 VND / 1 triệu từ (ước lượng, có thể có sai số).' },
-    //     { id: 'gemini-2.0-flash-lite-paid', name: 'Gemini 2.0 Flash-Lite', limit: 'Giới hạn: 4000 lần/phút. Giá khoảng: 14,377 VND / 1 triệu từ (ước lượng, có thể có sai số).' },
-    //     { id: 'gemini-2.0-flash-paid', name: 'Gemini 2.0 Flash', limit: 'Giới hạn: 2000 lần/phút. Giá khoảng: 19,177 VND / 1 triệu từ (ước lượng, có thể có sai số).' },
-    //     { id: 'gemini-1.5-pro-paid', name: 'Gemini 1.5 Pro', limit: 'Giới hạn: 1000 lần/phút. Giá khoảng: 239,624 VND / 1 triệu từ (ước lượng, có thể có sai số).' },
-    //     { id: 'openai-o3-mini', name: 'OpenAI o3 Mini', limit: 'Giá khoảng: 140,631 VND / 1 triệu từ (ước lượng, có thể có sai số).' },
-    //     { id: 'openai-gpt-4o-mini', name: 'OpenAI GPT-4o Mini', limit: 'Giá khoảng: 19,167 VND / 1 triệu từ (ước lượng, có thể có sai số).' },
-    //     { id: 'openai-chatgpt-4o', name: 'OpenAI ChatGPT-4o', limit: 'Giá khoảng: 87,495 VND / 1 triệu từ (ước lượng, có thể có sai số).' },
-    //     { id: 'deepseek-v3-paid', name: 'DeepSeek V3', limit: 'Giá khoảng: 33,283 VND / 1 triệu từ (ước lượng, có thể có sai số).' },
-    //     { id: 'deepseek-r1-paid', name: 'DeepSeek R1', limit: 'Giá khoảng: 62,295 VND / 1 triệu từ (ước lượng, có thể có sai số).' },
-    //     { id: 'qwen-32b', name: 'Qwen QwQ 32B', limit: 'Giá khoảng: 5,745 VND / 1 triệu từ (ước lượng, có thể có sai số).' },
-    //     { id: 'qwen-32b-instruct', name: 'Qwen2.5 32B Instruct', limit: 'Giá khoảng: 18,587 VND / 1 triệu từ (ước lượng, có thể có sai số).' },
-    //     { id: 'grok-2', name: 'Grok 2 1212', limit: 'Giá: 460,000 VND / 1 triệu từ.' },
-    //   ]
-    // }
+    
   ];
   const { aiConfig, updateAIConfig } = useAI();
 

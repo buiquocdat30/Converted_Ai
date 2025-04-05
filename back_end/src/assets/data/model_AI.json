@@ -1,0 +1,47 @@
+{
+  "id": "google",
+  "name": "Google (Miễn phí)",
+  "description": "Google cung cấp dịch vụ AI miễn phí, cho phép người dùng trải nghiệm dễ dàng. Để bắt đầu, bạn chỉ cần lấy API key (mã khóa) miễn phí từ Google nhé!",
+  "models": [
+    {
+      "id": "gemini-2.0-flash-lite",
+      "name": "Gemini 2.0 Flash-Lite",
+      "limit": "Giới hạn miễn phí: 30 lần/phút, 1500 lần một ngày."
+    },
+    {
+      "id": "gemma-3",
+      "name": "Gemma 3",
+      "limit": "Giới hạn miễn phí: 30 lần/phút, 1500 lần một ngày."
+    },
+    {
+      "id": "gemini-2.0-flash",
+      "name": "Gemini 2.0 Flash",
+      "limit": "Giới hạn miễn phí: 15 lần/phút, 1500 lần một ngày."
+    },
+    {
+      "id": "gemini-1.5-flash",
+      "name": "Gemini 1.5 Flash",
+      "limit": "Giới hạn miễn phí: 15 lần/phút, 1500 lần một ngày."
+    },
+    {
+      "id": "gemini-1.5-flash-8b",
+      "name": "Gemini 1.5 Flash-8B",
+      "limit": "Giới hạn miễn phí: 15 lần/phút, 1500 lần một ngày."
+    },
+    {
+      "id": "gemini-2.0-flash-experimental",
+      "name": "Gemini 2.5 Pro Experimental",
+      "limit": "Giới hạn miễn phí: 5 lần/phút, 1500 lần một ngày."
+    },
+    {
+      "id": "gemini-embedding-experimental-03-07",
+      "name": "Gemini Embedding Experimental 03-07",
+      "limit": "Giới hạn miễn phí: 5 lần/phút, 1500 lần một ngày."
+    },
+    {
+      "id": "gemini-1.5-pro",
+      "name": "Gemini 1.5 Pro",
+      "limit": "Giới hạn miễn phí: 2 lần/phút, 25 lần một ngày."
+    }
+  ]
+}
