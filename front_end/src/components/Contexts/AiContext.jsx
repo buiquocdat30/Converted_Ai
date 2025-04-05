@@ -38,6 +38,7 @@ export const AIProvider = ({ children }) => {
   }, [aiConfig]);
 
   const updateAIConfig = (newConfig) => {
+    console.log("Cập nhật config:", newConfig); // Debug tại đây
     setAIConfig((prev) => ({ ...prev, ...newConfig }));
   };
 

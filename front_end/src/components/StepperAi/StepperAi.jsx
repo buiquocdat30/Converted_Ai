@@ -26,26 +26,56 @@ const StepperAi = () => {
     console.log("SelectedFile:", selectedFile); // Kiểm tra giá trị
   }, [selectedFile]);
   // Thêm vào phần đầu component (sau các import)
-  const validateStep = (step) => {
-    switch (step) {
-      case 1: // Bước chọn nguồn
-        return !!selectedFile; // Yêu cầu chọn file
-      case 2: // Bước cài đặt AI
-        return aiConfig.apiKey.trim() !== ""; // Yêu cầu nhập API Key
-      default:
-        return true;
-    }
-  };
+  
 
   const handleNext = () => {
-    if (activeStep === 1 && !selectedFile) {
-      alert("Vui lòng chọn file EPUB/TXT trước khi tiếp tục!");
+    // Kiểm tra điều kiện trước khi chuyển bước
+    let canProceed = true;
+    let errorMessage = "";
+    
+    switch (activeStep) {
+      case 0: // Bước hướng dẫn - luôn cho phép
+        canProceed = true;
+        break;
+      case 1: // Bước chọn nguồn
+        if (!selectedFile) {
+          canProceed = false;
+          errorMessage = "Vui lòng chọn file EPUB/TXT trước khi tiếp tục!";
+        }
+        break;
+      case 2: // Bước cài đặt AI
+        if (!aiConfig.apiKey?.trim()) {
+          canProceed = false;
+          errorMessage = "Vui lòng nhập API Key trước khi tiếp tục!";
+        }
+        break;
+      case 3: // Bước dịch - không cần kiểm tra
+        canProceed = true;
+        break;
+      default:
+        canProceed = true;
+    }
+
+    if (!canProceed) {
+      alert(errorMessage);
       return;
     }
-    if (activeStep === 2 && !aiConfig.apiKey) {
-      alert("Vui lòng nhập API Key trước khi tiếp tục!");
+
+    // Nếu là bước cuối cùng
+    if (activeStep === steps.length - 1) {
+      // Hiển thị thông báo hoàn thành
+      const userConfirmed = window.confirm(
+        "🎉 Hoàn tất quá trình!\nBạn có muốn quay về trang chủ không?"
+      );
+      
+      if (userConfirmed) {
+        // Thực hiện chuyển về trang chủ
+        window.location.href = "/"; // Hoặc sử dụng navigate nếu dùng react-router
+      }
       return;
     }
+
+    // Chuyển sang bước tiếp theo
     setActiveStep((prev) => prev + 1);
   };
 
@@ -109,12 +139,12 @@ const StepperAi = () => {
             </div>
           ) : (
             <div>
-              <Typography variant="body1">
+              <div className="step-content">
                 {activeStep === 0 && <GuideSteps />}
                 {activeStep === 1 && <SourceText />}
                 {activeStep === 2 && <ChooseAI />}
                 {activeStep === 3 && <Converte />}
-              </Typography>
+              </div>
 
               <div className="st-list-button">
                 <CustomButton disabled={activeStep === 0} onClick={handleBack}>

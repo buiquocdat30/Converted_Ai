@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
-  Tab,
-  Tabs,
+  Typography,
   Box,
   Select,
   MenuItem,
@@ -115,7 +114,9 @@ const ChooseAI = () => {
   };
 
   const handleApiKeyChange = (e) => {
-    updateAIConfig({ apiKey: e.target.value });
+    const key = e.target.value;
+  console.log("API Key nhập vào:", key); // Thêm dòng này để debug
+  updateAIConfig({ apiKey: key });
   };
 
   const handleStyleChange = (e) => {
@@ -168,11 +169,15 @@ const ChooseAI = () => {
           </FormControl>
         </Box>
 
-        <p className="provider-description">{currentProvider.description}</p>
+        <div className="provider-description">
+          {currentProvider.description}
+        </div>
 
         {/**Phàn chọn model AI */}
         <div className="model-selection">
-          <h4>Chọn Mô Hình AI</h4>
+          <Typography variant="h6" component="div">
+            Chọn Mô Hình AI
+          </Typography>
           <div className="model-grid">
             {currentProvider.models.map((model) => (
               <div className="model-option" key={model.id}>

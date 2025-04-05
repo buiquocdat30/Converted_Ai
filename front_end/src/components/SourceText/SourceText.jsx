@@ -1,5 +1,5 @@
 import React, { useContext, useState, useRef } from "react";
-import { Tab } from "@mui/material";
+import { Tab, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { FileContext } from "../Contexts/FileContext"; // Import Context
 import { Search, CloudUpload } from "@mui/icons-material";
@@ -122,9 +122,9 @@ const SourceText = () => {
             </div>
 
             <div className="tab-content-body">
-              <h3 className="section-title">
-                📌 Các định dạng chương được hỗ trợ:
-              </h3>
+            <Typography variant="h6" component="div" className="section-title">
+  📌 Các định dạng chương được hỗ trợ:
+</Typography>
               <ul className="format-list">
                 <li>
                   <p>Chương N - Ví dụ: "Chương 1: Khối đầu"</p>

@@ -130,6 +130,7 @@ const Convert = () => {
   };
 
   const translateContent = async (content) => {
+    console.log("API Key đang sử dụng:", aiConfig.apiKey); // Debug key thực tế
     if (!aiConfig.apiKey) {
       throw new Error("API Key không hợp lệ");
     }
